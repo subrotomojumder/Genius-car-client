@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
@@ -21,7 +22,7 @@ const Login = () => {
                     email: user.email
                 }
                 // get jwt token
-                fetch('http://localhost:5000/jwt', {
+                fetch('https://genius-car-server-azure-two.vercel.app/jwt', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -67,6 +68,7 @@ const Login = () => {
                         </div>
                     </form>
                     <p className='text-center'>New to Genius car <Link to='/signup' className='text-orange-500 font-semibold hover:link'>Sign Up</Link></p>
+                    <SocialLogin></SocialLogin>
                 </div>
             </div>
         </div>

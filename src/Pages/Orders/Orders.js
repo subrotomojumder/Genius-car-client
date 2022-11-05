@@ -7,7 +7,7 @@ const Orders = () => {
     const { user, logout } = useContext(AuthContext);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+        fetch(`https://genius-car-server-azure-two.vercel.app/orders?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('genius-car')}`
             }
@@ -29,7 +29,7 @@ const Orders = () => {
     const handleOrderDelete = (id) => {
         const proceed = window.confirm('Are you sure, You want to this order');
         if (proceed) {
-            fetch(`http://localhost:5000/orders/${id}`, {
+            fetch(`https://genius-car-server-azure-two.vercel.app/orders/${id}`, {
                 method: 'DELETE',
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('genius-car')}`
@@ -47,7 +47,7 @@ const Orders = () => {
     }
 
     const handleOrderUpdate = (id) => {
-        fetch(`http://localhost:5000/orders/${id}`, {
+        fetch(`https://genius-car-server-azure-two.vercel.app/orders/${id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',

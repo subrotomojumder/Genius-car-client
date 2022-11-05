@@ -9,7 +9,7 @@ const Checkout = () => {
     const handlePlaceOrder = e => {
         e.preventDefault();
         const form = e.target;
-        const name = `${form.firstName.value}${form.lastName.value}`;
+        const name = `${form.firstName.value} ${form.lastName.value}`;
         const phone = form.phone.value;
         const email = form.email.value;
         const message = form.message.value;
@@ -23,7 +23,7 @@ const Checkout = () => {
             email,
             message
         }
-        fetch('http://localhost:5000/orders', {
+        fetch('https://genius-car-server-azure-two.vercel.app/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',

@@ -7,7 +7,7 @@ const Services = () => {
     const servicesLimit = seeAll ? services : services.slice(0, 3);
 
     useEffect(() => {
-        fetch('http://localhost:5000/services')
+        fetch('https://genius-car-server-azure-two.vercel.app/services')
             .then(res => res.json())
             .then(data => setServices(data))
     }, [])
