@@ -4,17 +4,22 @@ import logo from '../../../assets/logo.svg';
 import { AuthContext } from '../../../context/AuthProvider/AuthProvider';
 
 const Header = () => {
-    const {logout} = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     const userLogout = () => {
         logout()
-        .then(res => alert('your account logout'))
-        .catch(err => console.log(err.message))
+            .then(res => alert('your account logout'))
+            .catch(err => console.log(err.message))
     }
     const menuItems = <>
         <li className='font-semibold'><Link to='/'>Home</Link></li>
-        <li className='font-semibold'><Link to='/login'>Login</Link></li>
-        <li className='font-semibold'><Link to='/orders'>Orders</Link></li>
-        <li><button onClick={userLogout} className='btn btn-outline'>logout</button></li>
+        {
+            user?.email ?
+                <>
+                    <li className='font-semibold'><Link to='/orders'>Orders</Link></li>
+                    <li><button onClick={userLogout} className='btn btn-ghost'>logout</button></li>
+                </>
+                : <li className='font-semibold'><Link to='/login'>Login</Link></li>
+        }
     </>
     return (
         <div className="navbar bg-base-100 h-20 mb-8 pt-12">

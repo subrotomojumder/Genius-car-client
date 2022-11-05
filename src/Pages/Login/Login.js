@@ -15,11 +15,28 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         login(email, password)
-            .then(() => {
-                alert('login your account')
-                navigate(from, { replace: true });
+            .then( results => {
+                const user = results.user;
+                const currentUser = {
+                    email: user.email
+                }
+                // get jwt token
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    // set local storage jwt token
+                    localStorage.setItem("genius-car", data.token)
+                    navigate(from, { replace: true });
+                })
             })
-            .catch(err => console.log(err.message))
+            .catch(err => alert(err.message))
     }
     return (
         <div className="hero py-20">

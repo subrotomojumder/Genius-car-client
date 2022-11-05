@@ -4,29 +4,45 @@ import OrdersRow from './OrdersRow';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/orders?email=${user?.email}`)
-            .then(res => res.json())
-            .then(data => setOrders(data))
+        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('genius-car')}`
+            }
+        })
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    return logout()
+                        .then()
+                        .catch()
+                }
+                return res.json()
+            })
+            .then(data => {
+                setOrders(data)
+            })
             .catch(error => console.error(error.message))
-    }, [user?.email]);
+    }, [user?.email, logout]);
 
-    const handleOrderDelete = (id) =>{
+    const handleOrderDelete = (id) => {
         const proceed = window.confirm('Are you sure, You want to this order');
         if (proceed) {
             fetch(`http://localhost:5000/orders/${id}`, {
-                method: 'DELETE'
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.deletedCount > 0) {
-                    alert('deleted successful');
-                    const remaining= orders.filter(odr => odr._id !== id);
-                    setOrders(remaining);
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('genius-car')}`
                 }
             })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.deletedCount > 0) {
+                        alert('deleted successful');
+                        const remaining = orders.filter(odr => odr._id !== id);
+                        setOrders(remaining);
+                    }
+                })
         }
     }
 
@@ -34,20 +50,21 @@ const Orders = () => {
         fetch(`http://localhost:5000/orders/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-car')}`
             },
-            body: JSON.stringify({status: 'Approved'})
+            body: JSON.stringify({ status: 'Approved' })
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.modifiedCount > 0) {
-                const remaining = orders.filter(odr => odr._id !== id);
-                const approving = orders.find(odr => odr._id === id);
-                approving.status = "Approving";
-                const newOrders = [approving, ...remaining];
-                setOrders(newOrders);
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    const remaining = orders.filter(odr => odr._id !== id);
+                    const approving = orders.find(odr => odr._id === id);
+                    approving.status = "Approving";
+                    const newOrders = [approving, ...remaining];
+                    setOrders(newOrders);
+                }
+            })
     }
     return (
         <div>

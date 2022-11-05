@@ -16,7 +16,7 @@ const Checkout = () => {
 
         const order = {
             service: _id,
-            serviceName:  title,
+            serviceName: title,
             price,
             customer: name,
             phone,
@@ -26,18 +26,19 @@ const Checkout = () => {
         fetch('http://localhost:5000/orders', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-car')}`
             },
             body: JSON.stringify(order)
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.acknowledged){
-                alert('Order placed successfully');
-                form.reset();
-            }
-        })
-        .catch(err => console.log(err.message));
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    alert('Order placed successfully');
+                    form.reset();
+                }
+            })
+            .catch(err => console.log(err.message));
     }
     return (
         <div className='py-20 px-4 bg-slate-200'>
@@ -45,9 +46,9 @@ const Checkout = () => {
             <h2 className="text-4xl mb-4">You are about to order: <span className='text-blue-500'>{title}</span></h2>
             <form onSubmit={handlePlaceOrder}>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4'>
-                    <input name='firstName' type="text" placeholder="First Name" className="input input-bordered input-primary w-full" required/>
-                    <input name='lastName' type="text" placeholder="Last Name" className="input input-bordered input-primary w-full" required/>
-                    <input name='phone' type="text" placeholder="Your Phone" className="input input-bordered input-primary w-full" required/>
+                    <input name='firstName' type="text" placeholder="First Name" className="input input-bordered input-primary w-full" required />
+                    <input name='lastName' type="text" placeholder="Last Name" className="input input-bordered input-primary w-full" required />
+                    <input name='phone' type="text" placeholder="Your Phone" className="input input-bordered input-primary w-full" required />
                     <input name='email' type="text" placeholder="Your Email" defaultValue={user?.email} readOnly className="input input-bordered input-primary w-full" />
                 </div>
                 <textarea name='message' className="textarea textarea-accent h-24 w-full my-3" placeholder="Your Message"></textarea>
