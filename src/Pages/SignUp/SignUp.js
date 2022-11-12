@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { setAuthToken } from '../../api/authToken';
 import img from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
@@ -22,6 +23,7 @@ const SignUp = () => {
                 emailVerify()
                     .then(() => alert('please check your email inbox verify your account'))
                     .catch(err => console.log(err.message))
+                    setAuthToken(results.user)
             })
             .catch(err => console.log(err.message))
     }
