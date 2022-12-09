@@ -22,7 +22,7 @@ const Login = () => {
                     email: user.email
                 }
                 // get jwt token
-                fetch('https://genius-car-server-azure-two.vercel.app/jwt', {
+                fetch('http://localhost:5000/jwt', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
